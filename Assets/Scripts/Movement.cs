@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Rewired;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -14,6 +15,8 @@ public class Movement : MonoBehaviour
     private Animator anim;
     public Collider jaw;
     public AudioSource roar;
+
+    Rewired.player player;
 
 
     // Start is called before the first frame update
