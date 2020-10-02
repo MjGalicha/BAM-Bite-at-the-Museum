@@ -2,28 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Rewired;
 
 public class Dialogue_Manager : MonoBehaviour
 {
     public GameObject dBox;
     public Text dText;
 
+   Player tony;
+
     public bool dialogue_Active;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        tony = ReInput.players.GetPlayer(0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (dialogue_Active && Input.GetKeyDown(KeyCode.Space))
+       
+
+        if (dialogue_Active)
         {
-            dBox.SetActive(false);
-            dialogue_Active = false;
-        }
+            if (tony.GetButtonDown("Continue"))
+            {
+                dBox.SetActive(false);
+                dialogue_Active = false;
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                dBox.SetActive(false);
+                dialogue_Active = false;
+            }
+        } 
     }
 
     public void ShowBox(string dialogue)

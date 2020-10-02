@@ -15,37 +15,55 @@ public class Movement : MonoBehaviour
     private Animator anim;
     public Collider jaw;
     public AudioSource roar;
-
-    Rewired.player player;
+    readonly int id = 0;
+    Player player;
+    
 
 
     // Start is called before the first frame update
     void Start()
     {
+        
+        player = ReInput.players.GetPlayer(id);
         anim = GetComponent<Animator>();
     }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("b"))
+        if (player.GetButtonDown("Pickup")) //Input.GetKeyDown("b") || )
         {
             anim.SetTrigger("Bite");
         }
 
-        if(Input.GetKeyDown("r") && !roar.isPlaying)
+        if (player.GetButtonDown("Rawr") && !roar.isPlaying) //Input.GetKeyDown("r") || 
         {
             roar.Play();
         }
 
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
-
+        //float horizontal = Input.GetAxisRaw("Horizontal");
+        float controllerHorizontal = player.GetAxis("Move Horizontal");
+        //float vertical = Input.GetAxisRaw("Vertical");
+        float controllerVertical = player.GetAxis("Move Vertical");
+        //Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+        Vector3 controllerDirection = new Vector3(controllerHorizontal, 0f, controllerVertical).normalized;
+        /*
         if (direction.magnitude >= 0.1f)
         {
             anim.SetBool("Walk", true);
             anim.SetBool("Idle", false);
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnVelocity, turnSmooth);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            Vector3 movDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            controller.Move(movDir.normalized * speed * Time.deltaTime);
+        }
+        */
+        if (controllerDirection.magnitude >= 0.1f)
+        {
+            anim.SetBool("Walk", true);
+            anim.SetBool("Idle", false);
+            float targetAngle = Mathf.Atan2(controllerDirection.x, controllerDirection.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnVelocity, turnSmooth);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 

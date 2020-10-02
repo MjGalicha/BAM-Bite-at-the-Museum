@@ -3,26 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Rewired;
 
 public class CamRotate : MonoBehaviour
 {
     public float rotateLeft;
     public float rotateRight;
+    Player player;
 
+    private void Start()
+    {
+        player = ReInput.players.GetPlayer(0);
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey("q"))
+        /*
+        if(Input.GetKey("Q"))
         {
-            Debug.Log("key pressed");
-            GetComponent<CinemachineFreeLook>().m_XAxis.Value += rotateLeft * Time.deltaTime;
+            GetComponent<CinemachineFreeLook>().m_XAxis.Value += 
         }
 
-        if (Input.GetKey("e"))
+        if (Input.GetKey("E"))
         {
-            Debug.Log("e key pressed");
-            GetComponent<CinemachineFreeLook>().m_XAxis.Value += rotateRight * Time.deltaTime;
+            GetComponent<CinemachineFreeLook>().m_XAxis.Value += 
         }
+  
+        */
+        if (player.GetButton("Rotate Camera Left"))
+            GetComponent<CinemachineFreeLook>().m_XAxis.Value += rotateLeft * Time.deltaTime;
+        if (player.GetButton("Rotate Camera Right"))
+            GetComponent<CinemachineFreeLook>().m_XAxis.Value += rotateRight * Time.deltaTime;
+
     }
 }
